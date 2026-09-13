@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#070D0A">
+<meta name="description" content="Pak Gamers Community — tournaments, Warrior Lifesteal SMP, events, creators and Pakistan's most active Minecraft community.">
+<title>Pak Gamers Community — Tournaments, Lifesteal SMP &amp; Giveaways</title>
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Pak Gamers Community">
+<meta property="og:title" content="Pak Gamers Community — Tournaments, Lifesteal SMP & Giveaways">
+<meta property="og:description" content="Join thousands of Pakistani gamers in tournaments, Warrior Lifesteal SMP, exclusive events, giveaways, and a community that never logs off.">
+<meta property="og:image" content="https://raw.githubusercontent.com/untitledinfo/PGC1/main/banner2.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://untitledinfo.github.io/PGC1/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Pak Gamers Community — Tournaments, Lifesteal SMP & Giveaways">
+<meta name="twitter:description" content="Join thousands of Pakistani gamers in tournaments, Warrior Lifesteal SMP, exclusive events, giveaways, and a community that never logs off.">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/untitledinfo/PGC1/main/logo.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/untitledinfo/PGC1/main/logo.png">
+<link rel="stylesheet" href="styles.css">
+<script defer src="app.js"></script>
+</head>
+<body>
+<div class="preloader" id="preloader">
+  <img class="preloader-logo" src="https://raw.githubusercontent.com/untitledinfo/PGC1/main/logo.png" alt="" aria-hidden="true">
+  <p class="preloader-word">Loading <b>PG</b></p>
+  <div class="preloader-bar"></div>
+</div>
+<div class="scroll-progress" id="scrollProgress"></div>
+<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+<div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+<a class="skip" href="#main">Skip to content</a>
+<div class="grain" aria-hidden="true"></div>
+<div class="scanlines" aria-hidden="true"></div>
+<div class="cyber-grid" aria-hidden="true"></div>
+<canvas id="particles" aria-hidden="true"></canvas>
+<div class="bg-orbs" aria-hidden="true"><span class="orb orb-1"></span><span class="orb orb-2"></span><span class="orb orb-3"></span></div>
+<div class="spotlight" aria-hidden="true"></div>
+
+<header class="nav" id="top">
+  <a class="brand" href="#home" aria-label="PG home">
+    <img class="brand-logo" src="https://raw.githubusercontent.com/untitledinfo/PGC1/main/logo.png" width="1000" height="1000" alt="PG logo">
+    <span class="brand-word">PG<small>Pak Gamers</small></span>
+  </a>
+  <nav class="navlinks" id="navlinks" aria-label="Main navigation">
+    <a class="active" href="#home">Home</a>
+    <a href="#event">Events</a>
+    <a href="#server">Server</a>
+    <a href="#team">Team</a>
+    <a href="#applications">Applications</a>
+    <a href="news.html">News</a>
+  </nav>
+  <div class="nav-actions">
+    <a class="btn btn-sm btn-green" href="#discord">Join Discord</a>
+    <button class="menu" id="menuBtn" aria-controls="navlinks" aria-expanded="false" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="hero" id="home">
+  <div class="hero-copy reveal-left">
+    <p class="kicker">Pakistan's Minecraft community</p>
+    <h1 class="shine-text">Pak Gamers<br><span>never logs off.</span></h1>
+    <p class="hero-lede">Warrior Lifesteal SMP, weekly tournaments with real cash prizes, and a Discord full of players who show up every night — not just on launch day.</p>
+    <div class="hero-actions">
+      <a class="btn btn-green magnetic" href="#discord">Join the Discord</a>
+      <button class="btn btn-outline" data-modal="event">Register for Sunday's event</button>
+    </div>
+    <div class="hero-proof">
+      <div class="avatars"><i>AH</i><i>ZM</i><i>SK</i><i>+</i></div>
+      <p><strong id="heroMemberCount">–</strong> gamers already in the server</p>
+    </div>
+  </div>
+
+  <div class="hero-panel reveal-right delay">
+    <div class="status-card glass" data-status-pill>
+      <span class="status-dot" data-status-dot></span>
+      <div>
+        <p class="status-label">Server status</p>
+        <p class="status-value" data-status-text>Checking…</p>
+      </div>
+    </div>
+    <div class="preview-float">
+      <div class="voxel-panel glass server-preview" data-tilt-img>
+        <span class="hud-corner tl"></span><span class="hud-corner tr"></span><span class="hud-corner bl"></span><span class="hud-corner br"></span>
+        <div class="preview-frame">
+          <img class="preview-img" src="https://raw.githubusercontent.com/untitledinfo/PGC1/main/event-crafter.jpg" alt="Live look at the PG Warrior Lifesteal SMP arena" loading="lazy" onerror="this.closest('.preview-frame').classList.add('img-fallback')">
+          <span class="preview-scan"></span>
+          <span class="preview-tag"><i></i>LIVE ARENA</span>
+          <svg class="voxel-art voxel-mini" viewBox="0 0 300 130" aria-hidden="true">
+            <defs>
+              <linearGradient id="vTop" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7BFFC0"/><stop offset="1" stop-color="#16FF87"/></linearGradient>
+              <linearGradient id="vLeft" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0F6B45"/><stop offset="1" stop-color="#083D28"/></linearGradient>
+              <linearGradient id="vRight" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#12A362"/><stop offset="1" stop-color="#0A6B41"/></linearGradient>
+            </defs>
+            <g class="voxel voxel-1"><polygon points="40,10 70,26 40,42 10,26" fill="url(#vTop)"/><polygon points="10,26 40,42 40,72 10,56" fill="url(#vLeft)"/><polygon points="70,26 40,42 40,72 70,56" fill="url(#vRight)"/></g>
+            <g class="voxel voxel-2"><polygon points="260,60 290,76 260,92 230,76" fill="url(#vTop)"/><polygon points="230,76 260,92 260,122 230,106" fill="url(#vLeft)"/><polygon points="290,76 260,92 260,122 290,106" fill="url(#vRight)"/></g>
+          </svg>
+        </div>
+        <p>One arena. One champion. Every Sunday.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ticker" id="announcement">
+  <div class="ticker-info">
+    <span class="live-dot"></span>
+    <div><b>Registration open</b><p>Sunday Minecraft Tournament</p></div>
+  </div>
+  <div class="ticker-track-wrap">
+    <div class="ticker-track">
+      <span>🥇 <b>Rs. 10,000</b> Cash prize</span>
+      <span>🥈 <b>Gaming headset</b> Runner-up</span>
+      <span>🥉 <b>Premium account</b> Third place</span>
+      <span>🥇 <b>Rs. 10,000</b> Cash prize</span>
+      <span>🥈 <b>Gaming headset</b> Runner-up</span>
+      <span>🥉 <b>Premium account</b> Third place</span>
+    </div>
+  </div>
+  <div class="countdown" data-countdown>
+    <span><b data-days>06</b>days</span>
+    <span><b data-hours>18</b>hrs</span>
+    <span><b data-minutes>42</b>min</span>
+  </div>
+  <button class="btn btn-dark btn-sm" data-modal="event">Register now</button>
+</section>
+
+<section class="section event-section" id="event">
+  <div class="section-head reveal">
+    <p class="kicker">Next big event</p>
+    <h2>The Last Crafter Standing</h2>
+    <p>Survive the elements, outplay your rivals, and be the final player standing in our custom-built arena.</p>
+  </div>
+  <div class="event-grid">
+    <article class="event-main reveal-left">
+      <div class="event-art">
+        <img class="event-art-img" src="https://raw.githubusercontent.com/untitledinfo/PGC1/main/event-crafter.jpg" alt="The Last Crafter Standing tournament arena" loading="lazy" onerror="this.style.display='none'">
+        <div class="event-art-overlay"></div>
+        <div class="date-chip"><b>07</b><span>Jul<br>Sun</span></div>
+        <span class="tag">Solo · Survival</span>
+      </div>
+      <div class="event-copy">
+        <span class="status-open"><i></i>65 spots remaining</span>
+        <h3>The Last Crafter Standing</h3>
+        <div class="event-meta">
+          <span><small>Prize pool</small><b>Rs. 10,000</b></span>
+          <span><small>Starts at</small><b>12:00 PM PKT</b></span>
+          <span><small>Entry</small><b>Free</b></span>
+        </div>
+        <div class="button-row">
+          <button class="btn btn-green magnetic" data-modal="event">Secure your spot</button>
+          <button class="btn btn-outline" data-modal="rules">View rules</button>
+        </div>
+      </div>
+    </article>
+
+    <aside class="champions reveal-right" id="leaderboard">
+      <p class="kicker">Hall of fame</p>
+      <h3>Past champions</h3>
+      <div class="champ">
+        <b>01</b>
+        <span class="champ-photo"><img src="https://raw.githubusercontent.com/untitledinfo/PGC1/main/assets/champion-1.webp" data-name="DarkFlamez" alt="DarkFlamez — July champion" loading="lazy"></span>
+        <span class="champ-info"><strong>DarkFlamez</strong><small>July champion</small></span>
+        <em>Rs. 10K</em>
+      </div>
+      <div class="champ">
+        <b>02</b>
+        <span class="champ-photo"><img src="https://raw.githubusercontent.com/untitledinfo/PGC1/main/assets/champion-2.webp" data-name="MrElevenXD" alt="MrElevenXD — July champion" loading="lazy"></span>
+        <span class="champ-info"><strong>MrElevenXD</strong><small>July champion</small></span>
+        <em>MC Premium</em>
+      </div>
+      <div class="champ">
+        <b>03</b>
+        <span class="champ-photo"><img src="https://raw.githubusercontent.com/untitledinfo/PGC1/main/assets/champion-3.webp" data-name="Unknown" alt="Unknown — July champion" loading="lazy"></span>
+        <span class="champ-info"><strong>Unknown</strong><small>July champion</small></span>
+        <em>—</em>
+      </div>
+      <a class="text-link" href="#leaderboard">View full leaderboard</a>
+    </aside>
+  </div>
+</section>
+
+<section class="section server" id="server">
+  <div class="server-intro reveal-left">
+    <div class="mc-cube-wrap" aria-hidden="true"><div class="mc-cube"><span></span><span></span><span></span><span></span><span></span><span></span></div></div>
+    <p class="kicker">PG exclusive server</p>
+    <h2>Warrior Lifesteal SMP</h2>
+    <p>Every fight matters. Every heart counts. Build your legacy in Pakistan's most competitive crossplay survival world.</p>
+    <div class="server-numbers" data-server-status>
+      <div><span class="pulse" data-status-dot></span><b data-status-label>Checking</b></div>
+      <div><strong data-server-count>—</strong><small>players</small></div>
+      <div><strong data-server-ping>—</strong><small>ping</small></div>
+    </div>
+  </div>
+  <div class="server-panel reveal-right delay">
+    <div class="panel-tabs">
+      <button class="active" data-edition="java">Java edition</button>
+      <button data-edition="bedrock">Bedrock</button>
+    </div>
+    <div class="ip-box">
+      <div><small>IP address</small><b data-ip>play.pgcmc.fun</b></div>
+      <div><small>Port</small><b data-port>25568</b></div>
+      <button class="copy" data-copy aria-label="Copy server address">Copy</button>
+    </div>
+    <button class="btn btn-green btn-wide magnetic" data-copy>Copy IP &amp; start playing</button>
+    <p class="panel-note">Supports Minecraft 1.20+ · Java &amp; Bedrock crossplay</p>
+  </div>
+  <div class="feature-strip stagger">
+    <div class="reveal-pop"><span>♥</span><b>Steal hearts</b><small>Defeat players, gain power</small></div>
+    <div class="reveal-pop"><span>⚔</span><b>Intense PvP</b><small>Skill-based combat</small></div>
+    <div class="reveal-pop"><span>⬡</span><b>Custom crates</b><small>Exclusive weekly loot</small></div>
+    <div class="reveal-pop"><span>⌂</span><b>Build bases</b><small>Create your stronghold</small></div>
+    <div class="reveal-pop"><span>↻</span><b>Weekly updates</b><small>Fresh content, always</small></div>
+  </div>
+</section>
+
+<section class="section team" id="team">
+  <div class="section-head reveal">
+    <p class="kicker">The people behind PG</p>
+    <h2>Meet the team</h2>
+    <p>Six people keeping the servers online, the community fair, and PG looking this good.</p>
+  </div>
+  <div class="team-grid stagger">
+    <article class="team-card owner-card reveal-pop" data-tilt>
+      <span class="crown crown-gold">👑</span>
+      <div class="team-photo"><img src="https://raw.githubusercontent.com/untitledinfo/PGC1/main/assets/images.jfif" data-name="Farhan Bluetick" alt="Farhan Bluetick — PG Founder" loading="lazy"></div>
+      <span class="team-tag owner">Owner</span>
+      <div class="team-info"><h3>Farhan Bluetick</h3><span class="team-title">Founder &amp; Owner</span></div>
+    </article>
+    <article class="team-card owner-card reveal-pop" data-tilt>
+      <span class="crown crown-silver">👑</span>
+      <div class="team-photo"><img src="https://raw.githubusercontent.com/untitledinfo/PGC1/main/assets/2.webp" data-name="Firepdx" alt="Firepdx — PG Co-Owner" loading="lazy"></div>
+      <span class="team-tag owner">Co-Owner</span>
+      <div class="team-info"><h3>Firepdx</h3><span class="team-title">Co-Owner</span></div>
+    </article>
+    <article class="team-card reveal-pop" data-tilt>
+      <div class="team-photo"><img src="https://raw.githubusercontent.com/untitledinfo/PGC1/main/assets/1.webp" data-name="Ayan" alt="Ayan — PG Co-Founder" loading="lazy"></div>
+      <span class="team-tag founder">Co-Founder</span>
+      <div class="team-info"><h3>Ayan</h3><span class="team-title">Co-Founder</span></div>
+    </article>
+    <article class="team-card reveal-pop" data-tilt>
+      <div class="team-photo"><img src="https://raw.githubusercontent.com/untitledinfo/PGC1/main/assets/killer.webp" data-name="KillerRampage" alt="KillerRampage — PG Co-Founder" loading="lazy"></div>
+      <span class="team-tag founder">Co-Founder</span>
+      <div class="team-info"><h3>KillerRampage</h3><span class="team-title">Co-Founder</span></div>
+    </article>
+    <article class="team-card reveal-pop" data-tilt>
+      <div class="team-photo"><img src="https://raw.githubusercontent.com/untitledinfo/PGC1/main/assets/abdul.webp" data-name="Abdullah" alt="Abdullah — Head of Operations" loading="lazy"></div>
+      <span class="team-tag ops">Head of Operations</span>
+      <div class="team-info"><h3>Abdullah</h3><span class="team-title">Head of Operations</span></div>
+    </article>
+    <article class="team-card reveal-pop" data-tilt>
+      <div class="team-photo"><img src="https://raw.githubusercontent.com/untitledinfo/PGC1/main/assets/shot.webp" data-name="Sherdil 0-2" alt="Sherdil 0-2 — Admin Elite" loading="lazy"></div>
+      <span class="team-tag admin">Admin Elite</span>
+      <div class="team-info"><h3>Sherdil 0-2</h3><span class="team-title">Admin Elite</span></div>
+    </article>
+  </div>
+</section>
+
+<section class="section applications" id="applications">
+  <div class="section-head reveal">
+    <p class="kicker">Build with us</p>
+    <h2>Find your place in the team</h2>
+    <p>PG is built by passionate people. Bring your talent, shape the community, and level up with us.</p>
+  </div>
+  <div class="app-grid stagger">
+    <article class="app-card green reveal-pop">
+      <h3>Staff team</h3>
+      <p>Keep the community fair, welcoming and alive.</p>
+      <ul><li>Age 13+ and active in voice chat</li><li>Moderation and Discord management</li><li>Graphic and creative design</li></ul>
+      <button class="text-link" data-modal="staff">Apply for staff</button>
+    </article>
+    <article class="app-card reveal-pop">
+      <h3>Developers</h3>
+      <p>Build the systems that power the PG experience.</p>
+      <ul><li>Java, plugins and Skript</li><li>Configuration and optimization</li><li>Testing, teamwork and craft</li></ul>
+      <button class="text-link" data-modal="developer">Apply as developer</button>
+    </article>
+    <article class="app-card reveal-pop">
+      <h3>Creator program</h3>
+      <p>Turn your audience into something unforgettable.</p>
+      <ul><li>Verified creator role</li><li>Exclusive events and support</li><li>Community-wide promotion</li></ul>
+      <button class="text-link" data-modal="creator">Join creator program</button>
+    </article>
+  </div>
+</section>
+
+<section class="stats stagger" id="community">
+  <div class="stat reveal-pop"><b id="statDiscordMembers" data-counter="936">0</b><span>Discord members</span></div>
+  <div class="stat reveal-pop"><b data-counter="535">0</b><span>Unique players</span></div>
+  <div class="stat reveal-pop"><b data-counter="145">0</b><span>Events hosted</span></div>
+  <div class="stat reveal-pop"><b data-counter="15000" data-prefix="Rs. ">0</b><span>Prizes given</span></div>
+</section>
+
+<section class="section features">
+  <div class="center-head reveal"><p class="kicker">Built different</p><h2>Everything you need to play your way</h2></div>
+  <div class="feature-grid stagger">
+    <div class="reveal-pop"><b>Custom plugins</b><p>Original systems built for PG.</p></div>
+    <div class="reveal-pop"><b>Fast servers</b><p>Low latency across Pakistan.</p></div>
+    <div class="reveal-pop"><b>DDoS protection</b><p>Enterprise-grade protection.</p></div>
+    <div class="reveal-pop"><b>Friendly community</b><p>A place where everyone belongs.</p></div>
+    <div class="reveal-pop"><b>Crossplay</b><p>Java and Bedrock together.</p></div>
+    <div class="reveal-pop"><b>Leaderboards</b><p>Prove it. Climb the ranks.</p></div>
+  </div>
+</section>
+
+<section class="section gallery" id="gallery">
+  <div class="section-head reveal">
+    <div><p class="kicker">From the community</p><h2>PG in action</h2></div>
+    <div class="filter-row">
+      <button class="active" data-filter="all">All</button>
+      <button data-filter="events">Events</button>
+      <button data-filter="builds">Builds</button>
+      <button data-filter="community">Community</button>
+    </div>
+  </div>
+  <div class="gallery-grid stagger">
+    <button class="gallery-item tall reveal-pop" data-type="community" data-tilt-img><img src="https://raw.githubusercontent.com/untitledinfo/PGC1/refs/heads/main/unnamed%20(1).webp" alt="Farhan Bluetick" loading="lazy" onerror="this.style.display='none'"><span>Farhan Bluetick<small>Contact creator</small></span></button>
+    <button class="gallery-item arena reveal-pop" data-type="events" data-tilt-img><img src="https://raw.githubusercontent.com/untitledinfo/PGC1/refs/heads/main/1.webp" alt="Giveaway winner" loading="lazy" onerror="this.style.display='none'"><span>Giveaway winner<small>Discord giveaway</small></span></button>
+    <button class="gallery-item portal reveal-pop" data-type="events" data-tilt-img><img src="https://raw.githubusercontent.com/untitledinfo/PGC1/refs/heads/main/2.webp" alt="Event info" loading="lazy" onerror="this.style.display='none'"><span>Event info<small>About the event</small></span></button>
+    <button class="gallery-item squad reveal-pop" data-type="community" data-tilt-img><img src="https://raw.githubusercontent.com/untitledinfo/PGC1/refs/heads/main/3.webp" alt="PS5 and games" loading="lazy" onerror="this.style.display='none'"><span>PS5 &amp; games<small>Daily events</small></span></button>
+    <button class="gallery-item reveal-pop" data-type="community" data-tilt-img><img src="https://raw.githubusercontent.com/untitledinfo/PGC1/refs/heads/main/4.webp" alt="Staff gift winner" loading="lazy" onerror="this.style.display='none'"><span>Winner<small>Staff gift</small></span></button>
+    <button class="gallery-item reveal-pop" data-type="events" data-tilt-img><img src="https://raw.githubusercontent.com/untitledinfo/PGC1/refs/heads/main/1.png" alt="Rs 10,000 giveaway" loading="lazy" onerror="this.style.display='none'"><span>Giveaway<small>Rs. 10,000 winner</small></span></button>
+  </div>
+</section>
+
+<section class="section testimonials">
+  <div class="center-head reveal"><p class="kicker">Player stories</p><h2>The community speaks</h2></div>
+  <div class="quotes stagger">
+    <article class="reveal-pop"><div class="stars">★★★★★</div><blockquote>PG turned Minecraft from a game into a place I genuinely look forward to returning to.</blockquote><footer><i>AA</i><span><b>Ali Ahmed</b><small>Member since 2022</small></span></footer></article>
+    <article class="featured reveal-pop"><div class="stars">★★★★★</div><blockquote>Yes, I have received the game. Thank you so much Panther Boy and thank you so much Farhan Bluetick.</blockquote><footer><i>ME</i><span><b>MrElevenXD</b><small>Tournament champion</small></span></footer></article>
+    <article class="reveal-pop"><div class="stars">★★★★★</div><blockquote>A rare server where the staff listens, updates feel meaningful, and the community actually helps.</blockquote><footer><i>SR</i><span><b>Sarah R.</b><small>Warrior SMP player</small></span></footer></article>
+  </div>
+</section>
+
+<section class="section faq-section" id="faq">
+  <div class="faq-intro reveal">
+    <p class="kicker">Need to know</p>
+    <h2>Frequently asked</h2>
+    <p>Still stuck? Our support team is one Discord message away.</p>
+    <a class="btn btn-outline" href="#discord">Get support</a>
+  </div>
+  <div class="faq reveal">
+    <details open><summary>How do I join the Minecraft server?<span>+</span></summary><p>Open Minecraft 1.20 or newer, add <b>play.pgcmc.fun</b> to your server list, and connect using the Java or Bedrock port shown above.</p></details>
+    <details><summary>How do I register for an event?<span>+</span></summary><p>Use any Register button on this page, submit your in-game name and Discord ID, then watch Discord for confirmation.</p></details>
+    <details><summary>Can cracked Minecraft accounts join?<span>+</span></summary><p>Account eligibility varies by season. Check the current server rules in Discord before joining.</p></details>
+    <details><summary>What are the server rules?<span>+</span></summary><p>No cheating, exploiting, hate speech or targeted harassment. Competitive play is encouraged; toxic behaviour is not.</p></details>
+    <details><summary>How do I apply for staff or creator roles?<span>+</span></summary><p>Choose your program above and complete the short application. We review applications weekly.</p></details>
+  </div>
+</section>
+
+<section class="discord" id="discord">
+  <div class="discord-mark"><img src="https://raw.githubusercontent.com/untitledinfo/PGC1/main/logo.png" alt="PG logo" onerror="this.remove()"></div>
+  <div class="reveal">
+    <p class="kicker">The conversation never stops</p>
+    <h2>Your next squad is waiting.</h2>
+    <p>Tournaments, giveaways, support, updates, voice chat — and thousands of Pakistani gamers who get it.</p>
+    <a class="btn btn-green magnetic" href="https://discord.gg/uTuaEzFpr" target="_blank" rel="noreferrer">Join the PG Discord</a>
+  </div>
+  <div class="discord-widget reveal" id="discordWidget">
+    <div class="widget-head"><div><span class="live-dot" id="discordLiveDot"></span><b>Pak Gamers Community</b></div><small>discord.gg/uTuaEzFpr</small></div>
+    <div class="widget-stats"><span><b id="widgetMemberCount">–</b><small>Members</small></span><span><b id="widgetOnlineCount">–</b><small>Online now</small></span></div>
+    <div class="online-list" id="onlineList"><span><i></i>Loading live members <small>Connecting to Discord…</small></span></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-brand">
+    <a class="brand" href="#top"><img class="brand-logo" src="https://raw.githubusercontent.com/untitledinfo/PGC1/main/logo.png" width="1000" height="1000" alt="PG logo"><span class="brand-word">PG<small>Pak Gamers</small></span></a>
+    <p>Pakistan's home for competitive gaming, Minecraft and community.</p>
+  </div>
+  <div><b>Explore</b><a href="#event">Events</a><a href="#server">Server</a><a href="#team">Team</a><a href="#gallery">Gallery</a><a href="#faq">Support</a></div>
+  <div><b>Community</b><a href="#applications">Applications</a><a href="#discord">Discord</a><a href="#leaderboard">Leaderboards</a><a href="news.html">News</a></div>
+  <div><b>Legal</b><a href="privacy-policy.html">Privacy policy</a><a href="terms-of-service.html">Terms of service</a><a href="#faq">Server rules</a></div>
+  <div class="footer-bottom">
+    <span>© 2026 Pak Gamers Community. All rights reserved.</span>
+    <span>Made with ♥ in Pakistan 🇵🇰</span>
+  </div>
+</footer>
+
+<button class="back-top" aria-label="Back to top">↑</button>
+<div class="toast" role="status" aria-live="polite"></div>
+<dialog class="modal"><button class="modal-close" aria-label="Close">×</button><div class="modal-body"></div></dialog>
+<dialog class="lightbox"><button class="modal-close" aria-label="Close">×</button><img class="lightbox-img" alt=""><p class="lightbox-caption"></p></dialog>
+
+</body>
+</html>

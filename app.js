@@ -19,30 +19,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // ---- scroll progress bar ----
+  // ---- unified scroll handler ----
+  // progress bar, nav shrink, orb parallax and back-to-top used to be 4
+  // separate scroll listeners each reading/writing layout independently,
+  // which meant up to 4 style recalculations per scroll event. They're
+  // batched into a single rAF-throttled tick here instead.
   const progressBar = document.getElementById('scrollProgress');
-  function updateProgress() {
-    if (!progressBar) return;
-    const h = document.documentElement;
-    const scrolled = h.scrollTop || document.body.scrollTop;
-    const max = h.scrollHeight - h.clientHeight;
-    progressBar.style.width = (max > 0 ? (scrolled / max) * 100 : 0) + '%';
-  }
-  updateProgress();
-  window.addEventListener('scroll', updateProgress, { passive: true });
-  window.addEventListener('resize', updateProgress);
-
-  // ---- nav shrink-on-scroll + background orb parallax ----
   const navEl = document.querySelector('.nav');
   const orbsWrap = document.querySelector('.bg-orbs');
-  function updateScrollFx() {
-    if (navEl) navEl.classList.toggle('scrolled', window.scrollY > 40);
-    if (orbsWrap && !reduceMotionEarly) {
-      orbsWrap.style.transform = `translateY(${window.scrollY * 0.12}px)`;
+  const backTop = document.querySelector('.back-top');
+  const docEl = document.documentElement;
+  let scrollTicking = false;
+  function applyScrollFx() {
+    scrollTicking = false;
+    const scrolled = docEl.scrollTop || document.body.scrollTop;
+    const max = docEl.scrollHeight - docEl.clientHeight;
+    if (progressBar) progressBar.style.width = (max > 0 ? (scrolled / max) * 100 : 0) + '%';
+    if (navEl) navEl.classList.toggle('scrolled', scrolled > 40);
+    if (orbsWrap && !reduceMotionEarly) orbsWrap.style.transform = `translateY(${scrolled * 0.12}px)`;
+    if (backTop) backTop.classList.toggle('show', scrolled > 600);
+  }
+  function onScroll() {
+    if (!scrollTicking) {
+      scrollTicking = true;
+      requestAnimationFrame(applyScrollFx);
     }
   }
-  updateScrollFx();
-  window.addEventListener('scroll', updateScrollFx, { passive: true });
+  applyScrollFx();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
 
   // ---- custom cursor (desktop / fine pointer only) ----
   if (pointerFine && !reduceMotionEarly) {
@@ -54,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
       window.addEventListener('mousemove', (e) => {
         tx = e.clientX; ty = e.clientY;
         dot.style.left = tx + 'px'; dot.style.top = ty + 'px';
-      });
+      }, { passive: true });
       (function trail() {
         rx += (tx - rx) * 0.18; ry += (ty - ry) * 0.18;
         ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
@@ -248,21 +253,36 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('mousemove', (e) => {
       spotlight.style.setProperty('--mx', e.clientX + 'px');
       spotlight.style.setProperty('--my', e.clientY + 'px');
-    });
+    }, { passive: true });
   }
 
   // particle constellation background
+  // perf-tuned: fewer nodes + squared-distance checks (no per-pair sqrt) on
+  // the O(n^2) link pass, link-drawing skipped entirely on touch/low-core
+  // devices, and the whole rAF loop is paused while the tab is hidden.
   const canvas = document.getElementById('particles');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const lowPower = !window.matchMedia('(pointer:fine)').matches || (navigator.hardwareConcurrency || 8) <= 4;
   if (canvas && !reduceMotion) {
     const ctx = canvas.getContext('2d');
     let w, h, particles;
+    let rafId = null;
     const COLORS = ['rgba(22,255,135,.8)', 'rgba(89,255,185,.7)', 'rgba(63,169,232,.5)'];
+    const MAX_PARTICLES = lowPower ? 36 : 80;
+    const LINK_DIST = lowPower ? 90 : 120;
+    const LINK_DIST_SQ = LINK_DIST * LINK_DIST;
+    const drawLinks = !lowPower;
 
     function resize() {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = Math.max(window.innerHeight, document.body.scrollHeight * 0.4);
-      const count = Math.min(90, Math.floor((w * h) / 22000));
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      w = window.innerWidth;
+      h = Math.max(window.innerHeight, document.body.scrollHeight * 0.4);
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      canvas.style.width = w + 'px';
+      canvas.style.height = h + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const count = Math.min(MAX_PARTICLES, Math.floor((w * h) / 26000));
       particles = Array.from({ length: count }, () => ({
         x: Math.random() * w,
         y: Math.random() * h,
@@ -273,7 +293,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }));
     }
     resize();
-    window.addEventListener('resize', resize);
+    let resizeTimer = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(resize, 200);
+    });
 
     function frame() {
       ctx.clearRect(0, 0, w, h);
@@ -286,24 +310,35 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fillStyle = p.c;
         ctx.fill();
       });
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const a = particles[i], b = particles[j];
-          const dx = a.x - b.x, dy = a.y - b.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 120) {
-            ctx.strokeStyle = `rgba(22,255,135,${(1 - dist / 120) * 0.12})`;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.stroke();
+      if (drawLinks) {
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const a = particles[i], b = particles[j];
+            const dx = a.x - b.x, dy = a.y - b.y;
+            const distSq = dx * dx + dy * dy;
+            if (distSq < LINK_DIST_SQ) {
+              ctx.strokeStyle = `rgba(22,255,135,${(1 - Math.sqrt(distSq) / LINK_DIST) * 0.12})`;
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.stroke();
+            }
           }
         }
       }
-      requestAnimationFrame(frame);
+      rafId = requestAnimationFrame(frame);
     }
-    requestAnimationFrame(frame);
+    rafId = requestAnimationFrame(frame);
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = null;
+      } else if (!rafId) {
+        rafId = requestAnimationFrame(frame);
+      }
+    });
   }
 
   // subtle parallax tilt on hero panel
@@ -314,7 +349,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const relX = (e.clientX - rect.left - rect.width / 2) / rect.width;
       const relY = (e.clientY - rect.top - rect.height / 2) / rect.height;
       heroPanel.style.transform = `rotateY(${relX * 4}deg) rotateX(${-relY * 4}deg)`;
-    });
+    }, { passive: true });
     document.querySelector('.hero')?.addEventListener('mouseleave', () => {
       heroPanel.style.transform = 'none';
     });
@@ -350,7 +385,7 @@ document.addEventListener('DOMContentLoaded', () => {
         card.style.transform = `translateY(-6px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
         card.style.setProperty('--mx', (px * 100) + '%');
         card.style.setProperty('--my', (py * 100) + '%');
-      });
+      }, { passive: true });
       card.addEventListener('mouseleave', () => { card.style.transform = ''; });
     });
 
@@ -363,7 +398,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const rotY = (px - 0.5) * 8;
         const rotX = (0.5 - py) * 8;
         item.style.transform = `translateY(-6px) scale(1.015) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
-      });
+      }, { passive: true });
       item.addEventListener('mouseleave', () => { item.style.transform = ''; });
     });
 
@@ -374,16 +409,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const mx = (e.clientX - r.left - r.width / 2) * 0.28;
         const my = (e.clientY - r.top - r.height / 2) * 0.4;
         btn.style.transform = `translate(${mx}px, ${my - 2}px)`;
-      });
+      }, { passive: true });
       btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
     });
   }
 
-  // back to top
-  const backTop = document.querySelector('.back-top');
-  window.addEventListener('scroll', () => {
-    backTop?.classList.toggle('show', window.scrollY > 600);
-  });
+  // back to top (visibility handled by the unified scroll handler above)
   backTop?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
   // toast
@@ -493,7 +524,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const start = performance.now();
       function step(now) {
         const p = Math.min(1, (now - start) / dur);
-        el.textContent = prefix + Math.floor(p * target).toLocaleString();
+        const eased = 1 - Math.pow(1 - p, 3); // ease-out-cubic: quick start, soft settle
+        el.textContent = prefix + Math.floor(eased * target).toLocaleString();
         if (p < 1) { requestAnimationFrame(step); } else { el.textContent = prefix + target.toLocaleString(); el.dataset.animated = 'true'; }
       }
       requestAnimationFrame(step);
@@ -610,6 +642,20 @@ document.addEventListener('DOMContentLoaded', () => {
     </span>`;
   }
 
+  // fallback shown when Discord's per-member widget isn't configured (the
+  // invite API only gives us a headcount, not names) — fills the row with
+  // staggered gradient presence dots plus the real online count instead of
+  // one sparse line of text sitting in an otherwise empty card
+  function renderPresenceFallback(onlineCount) {
+    const n = onlineCount ?? 0;
+    if (!n) return `<span><i></i>Live stats unavailable right now</span>`;
+    const shown = Math.min(n, 8);
+    const dots = Array.from({ length: shown }, (_, i) =>
+      `<span class="presence-dot" style="animation-delay:${i * 55}ms;background:${AVATAR_COLORS[i % AVATAR_COLORS.length]}"></span>`
+    ).join('');
+    return `<div class="presence-row"><span class="presence-dots">${dots}</span><span class="presence-count"><strong>${n.toLocaleString()}</strong> online now — join to say hey</span></div>`;
+  }
+
   async function refreshDiscordStats() {
     try {
       const widget = await fetchDiscordWidget().catch(() => null);
@@ -644,7 +690,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }, { once: true });
           });
         } else {
-          listEl.innerHTML = `<span><i></i>${(onlineCount ?? 0).toLocaleString?.() ?? onlineCount} members online now</span>`;
+          listEl.innerHTML = renderPresenceFallback(onlineCount);
         }
       }
     } catch (err) {
